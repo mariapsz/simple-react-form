@@ -1,0 +1,36 @@
+.container {
+    padding: 0 5vh 0 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+.rowWrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 60vh;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: left;
+    padding: 1vh;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2vh;
+}
+
+.button {
+    background-color: #282c34;
+    font-size: calc(4px + 2vmin);
+    color: white;
+    margin-right: 1vh;
+    height: 5.5vh;
+    width: 15vh;
+}
+
+
