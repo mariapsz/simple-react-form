@@ -4,6 +4,8 @@ import '../../style/form-styles.css';
 import '../../classes/Person';
 import {FormState} from "../../classes/FormState";
 import Person from "../../classes/Person";
+import {number} from "prop-types";
+import {create} from "domain";
 
 interface IProps {
 }
@@ -16,29 +18,47 @@ class FormTable extends React.Component<IProps, FormState> {
             personalData: new Map(Object.entries(new Person())),
             isInputCorrect: new Map(Object.entries(new Person())),
         };
-        //this.submitButtonRef = React.createRef();
+        this.setStartStateValues();
     }
 
-    myRef = createRef<HTMLDivElement>();
+    setStartStateValues = () => {
+        this.state.isInputCorrect.set('drivingLicense', true);
+        this.state.isInputCorrect.set('male', true);
+        this.state.isInputCorrect.set('comments', true);
+    };
 
     handler = (e: React.ChangeEvent<HTMLInputElement>, isInputCorrect: boolean) => {
-        if (isInputCorrect) {
+        if (e.currentTarget.name == 'drivingLicense') {
             this.setState({
-                   personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.value),
+                personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.checked),
+            });
+        } else {
+
+            if (isInputCorrect) {
+                this.setState({
+                    personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.value),
                 });
-        }
-        // PROBOWALAS ZROBIC SET NA TYM CO WPADALO JAKO DRUGI PARAMETR FUNKCJI ^^
-        this.setState({
-            isInputCorrect : this.state.isInputCorrect.set(e.currentTarget.name, false),
-    });
+            }
+            this.setState({
+                isInputCorrect: this.state.isInputCorrect.set(e.currentTarget.name, isInputCorrect),
+            });
+        }console.log(this.state.isInputCorrect);
+        console.log(this.state.personalData);
+    };
 
-        let a = this.state.isInputCorrect.values();
-        console.log(this.state.isInputCorrect.get('name') + "hehe");
-        console.log(a);
-
+    canBeSubmitted = () => {
+        let allAreCorrect: boolean = true;
+        this.state.isInputCorrect.forEach(value => {
+                if (!value) {
+                    allAreCorrect = false;
+                }
+            }
+        );
+        return allAreCorrect;
     };
 
     render() {
+        let isDisabled = !this.canBeSubmitted();
         return (
             <div>
                 <div className='container'>
@@ -46,30 +66,30 @@ class FormTable extends React.Component<IProps, FormState> {
                         <FormTableRow action={this.handler} name='name' labelText='Imię'
                                       validationRegex='^[A-ZĄĆĘŁŃŚÓŹŻ][a-ząćęłńóśźż]+$'/>
                         <FormTableRow action={this.handler} name='surname' labelText='Nazwisko'
-                                      validationRegex='asd'/>
+                                      validationRegex='^[A-ZĄĆĘŁŃŚÓŹŻ][a-ząćęłńóśźż]+([ -][A-ZĄĆĘŁŃŚÓŹŻ][a-ząćęłńóśźż]+)?$'/>
                         <FormTableRow action={this.handler} name='city' labelText='Miasto'
-                                      validationRegex='asd'/>
+                                      validationRegex='^[A-ZĄĆĘŁŃŚÓŹŻ]+([a-ząćęłńśóźż]+)?(([ -][A-ZĄĆĘŁŃŚÓŹŻ][a-ząćęłńśóźż]+)?){0,5}$'/>
                         <FormTableRow action={this.handler} name='street' labelText='Ulica'
-                                      validationRegex='asd'/>
-                        <FormTableRow action={this.handler} name='homeNumber' labelText='Numer domu'
-                                      validationRegex='asd'/>
+                                      validationRegex='^[A-ZĄĆĘŁŃŚÓŹŻ]+([a-ząćęłńśóźż]+)?([0-9]+)?(([ ](([A-ZĄĆĘŁŃŚÓŹŻ]+)?([a-ząćęłńśóźż]+)?)?([0-9]+)?)?){0,4}$'/>
+                        <FormTableRow action={this.handler} name='houseNumber' labelText='Numer domu'
+                                      validationRegex='^\d+([a-z|A-Z]+)?$'/>
                         <FormTableRow action={this.handler} name='flatNumber' labelText='Numer mieszkania'
-                                      validationRegex='asd'/>
+                                      validationRegex='^\d+$'/>
                         <FormTableRow action={this.handler} name='dateOfBirth' labelText='Data urodzenia (dd-mm-rr)'
-                                      validationRegex='asd'/>
+                                      validationRegex='^([0-2][0-9]|[3][0-1])[.\-]([0][1-9]|[1][0-2])[.\-]19[0-9][0-9]|20[0-9][0-9]$'/>
                         <FormTableRow action={this.handler} name='emailAddress' labelText='Adres email'
-                                      validationRegex='asd'/>
+                                      validationRegex='[A-Za-z0-9._%+-]+@[A-Za-z0-9._-]+\.[a-z]{2,}$'/>
                         <FormTableRow action={this.handler} name='male' labelText='Płeć'
-                                      validationRegex='asd'/>
+                                      validationRegex='.*'/>
                         <FormTableRow action={this.handler} name='drivingLicense' labelText='Prawo jazdy'
-                                      validationRegex='asd'/>
+                                      validationRegex='.*'/>
                         <FormTableRow action={this.handler} name='comments' labelText='Uwagi'
-                                      validationRegex='asd'/>
+                                      validationRegex='.*'/>
                     </div>
                 </div>
                 <div className='buttonWrapper'>
-                    <div ref={this.myRef} className='rowWrapper'>
-                        <button className='button'>Zatwierdź</button>
+                    <div className='rowWrapper'>
+                        <button disabled={isDisabled} className='button'>Zatwierdź</button>
                     </div>
                 </div>
             </div>

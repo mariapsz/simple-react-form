@@ -6,23 +6,21 @@ class Person {
     houseNumber: any;
     flatNumber: any;
     dateOfBirth: any;
-    phoneNumber: any;
     emailAddress: any;
     male: any;
-    drivingLicense: any;
+    drivingLicense: boolean;
     comments: any;
 
     constructor() {
-        this.name = 'anjsdkz';
+        this.name = '';
         this.surname = '';
         this.city = '';
         this.street = '';
         this.houseNumber = '';
         this.flatNumber = '';
         this.dateOfBirth = '';
-        this.phoneNumber = '';
         this.emailAddress = '';
-        this.male = '';
+        this.male = 'woman';
         this.drivingLicense = false;
         this.comments = '';
     }

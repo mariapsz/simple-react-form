@@ -21,10 +21,10 @@ class FormTableRow extends React.Component<IProps, IState> {
     handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (new RegExp(this.props.validationRegex).test(e.currentTarget.value)) {
             e.currentTarget.style.borderColor = 'initial';
-            this.props.action(e,true);
+            this.props.action(e, true);
         } else {
             e.currentTarget.style.borderColor = '#F00';
-            this.props.action(e,false);
+            this.props.action(e, false);
         }
     };
 
@@ -33,14 +33,14 @@ class FormTableRow extends React.Component<IProps, IState> {
         let inputType: any;
         switch (this.props.name) {
             case 'male': {
-                inputType = <select name={this.props.name}>
+                inputType = <select name={this.props.name} onChange={this.handleChange}>
                     <option>kobieta</option>
                     <option>mężczyzna</option>
                 </select>;
                 break;
             }
             case 'drivingLicense': {
-                inputType = <input type='checkbox' name={this.props.name}/>;
+                inputType = <input type='checkbox' name={this.props.name} onChange={this.handleChange}/>;
                 break;
             }
             case 'comments': {
@@ -48,8 +48,7 @@ class FormTableRow extends React.Component<IProps, IState> {
                 break;
             }
             default: {
-                inputType =
-                    <input onChange={this.handleChange} name={this.props.name}/>;
+                inputType = <input onChange={this.handleChange} name={this.props.name}/>;
                 break;
             }
         }
