@@ -1,4 +1,4 @@
 export interface FormState {
-    personalData: Map<any, string>,
-    isInputCorrect: Map<any, string>,
+    personalData: Map<string, string>,
+    isInputCorrect: Map<string, boolean>,
 }

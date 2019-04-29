@@ -21,15 +21,16 @@ class FormTable extends React.Component<IProps, FormState> {
 
     myRef = createRef<HTMLDivElement>();
 
-    handler = (e: React.ChangeEvent<HTMLInputElement>, isInputCorrect: any) => {
+    handler = (e: React.ChangeEvent<HTMLInputElement>, isInputCorrect: boolean) => {
         if (isInputCorrect) {
             this.setState({
                    personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.value),
                 });
         }
+        // PROBOWALAS ZROBIC SET NA TYM CO WPADALO JAKO DRUGI PARAMETR FUNKCJI ^^
         this.setState({
-            isInputCorrect : isInputCorrect.set(e.currentTarget.name, false),
-        });
+            isInputCorrect : this.state.isInputCorrect.set(e.currentTarget.name, false),
+    });
 
         let a = this.state.isInputCorrect.values();
         console.log(this.state.isInputCorrect.get('name') + "hehe");
