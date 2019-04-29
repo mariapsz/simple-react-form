@@ -28,11 +28,12 @@ class FormTable extends React.Component<IProps, FormState> {
                 });
         }
         this.setState({
-            isInputCorrect : isInputCorrect.set(e.currentTarget.name, isInputCorrect),
+            isInputCorrect : isInputCorrect.set(e.currentTarget.name, false),
         });
 
-
-        this.state.isInputCorrect.values().
+        let a = this.state.isInputCorrect.values();
+        console.log(this.state.isInputCorrect.get('name') + "hehe");
+        console.log(a);
 
     };
 

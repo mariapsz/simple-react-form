@@ -13,7 +13,7 @@ class Person {
     comments: any;
 
     constructor() {
-        this.name = '';
+        this.name = 'anjsdkz';
         this.surname = '';
         this.city = '';
         this.street = '';
