@@ -4,7 +4,7 @@ import '../../style/form-styles.css';
 import '../../classes/Person';
 import {FormState} from "../../classes/FormState";
 import Person from "../../classes/Person";
-import {number} from "prop-types";
+import {instanceOf, number, object, string} from "prop-types";
 import {create} from "domain";
 
 interface IProps {
@@ -27,23 +27,29 @@ class FormTable extends React.Component<IProps, FormState> {
         this.state.isInputCorrect.set('comments', true);
     };
 
-    handler = (e: React.ChangeEvent<HTMLInputElement>, isInputCorrect: boolean) => {
-        if (e.currentTarget.name == 'drivingLicense') {
-            this.setState({
-                personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.checked),
-            });
-        } else {
-
-            if (isInputCorrect) {
+    handler = (e: React.ChangeEvent<HTMLElement>, isInputCorrect: boolean) => {
+        if (e.nativeEvent.type === 'input') {
+            let temp: React.ChangeEvent<HTMLInputElement> = e as React.ChangeEvent<HTMLInputElement>;
+            if (temp.currentTarget.name == 'drivingLicense') {
                 this.setState({
-                    personalData: this.state.personalData.set(e.currentTarget.name, e.currentTarget.value),
+                    personalData: this.state.personalData.set(temp.currentTarget.name, temp.currentTarget.checked),
+                });
+            } else {
+                if (isInputCorrect) {
+                    this.setState({
+                        personalData: this.state.personalData.set(temp.currentTarget.name, temp.currentTarget.value),
+                    });
+                }
+                this.setState({
+                    isInputCorrect: this.state.isInputCorrect.set(temp.currentTarget.name, isInputCorrect),
                 });
             }
+        } else if (e.nativeEvent.type === 'change') {
+            let temp: React.ChangeEvent<HTMLSelectElement> = e as React.ChangeEvent<HTMLSelectElement>;
             this.setState({
-                isInputCorrect: this.state.isInputCorrect.set(e.currentTarget.name, isInputCorrect),
+                personalData: this.state.personalData.set(temp.currentTarget.name, temp.currentTarget.value),
             });
-        }console.log(this.state.isInputCorrect);
-        console.log(this.state.personalData);
+        }
     };
 
     canBeSubmitted = () => {
@@ -75,7 +81,7 @@ class FormTable extends React.Component<IProps, FormState> {
                                       validationRegex='^\d+([a-z|A-Z]+)?$'/>
                         <FormTableRow action={this.handler} name='flatNumber' labelText='Numer mieszkania'
                                       validationRegex='^\d+$'/>
-                        <FormTableRow action={this.handler} name='dateOfBirth' labelText='Data urodzenia (dd-mm-rr)'
+                        <FormTableRow action={this.handler} name='dateOfBirth' labelText='Data urodzenia (dd-mm-rrrr)'
                                       validationRegex='^([0-2][0-9]|[3][0-1])[.\-]([0][1-9]|[1][0-2])[.\-]19[0-9][0-9]|20[0-9][0-9]$'/>
                         <FormTableRow action={this.handler} name='emailAddress' labelText='Adres email'
                                       validationRegex='[A-Za-z0-9._%+-]+@[A-Za-z0-9._-]+\.[a-z]{2,}$'/>
